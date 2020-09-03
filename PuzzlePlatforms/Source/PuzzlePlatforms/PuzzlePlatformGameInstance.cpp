@@ -10,7 +10,7 @@
 
 UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitializer) 
 {
-    ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClass(TEXT("/Game/MenuSysytem/WBP_MainMenu"));
+    ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClass(TEXT("/Game/MenuSysytem/UI/WBP_MainMenu"));
 
     if (!ensure(MenuBPClass.Class != nullptr)) return;
 
@@ -52,9 +52,9 @@ void UPuzzlePlatformGameInstance::LoadMenu()
 {
     if (!ensure(MenuClass != nullptr)) return;
     UUserWidget* Menu = CreateWidget<UUserWidget>(this, MenuClass);
+    if (!ensure(Menu != nullptr)) return;
 
     Menu->AddToViewport();
-    if (!ensure(Menu != nullptr)) return;
 
     APlayerController* PlayerController = GetFirstLocalPlayerController();
     if (!ensure(PlayerController != nullptr)) return;

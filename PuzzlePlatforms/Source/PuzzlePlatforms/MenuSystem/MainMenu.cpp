@@ -18,5 +18,50 @@ bool UMainMenu::Initialize()
 
 void UMainMenu::HostServer() 
 {
-    UE_LOG(LogTemp, Warning, TEXT("Hosting called"));
+    if (MenuInterface != nullptr)
+    {
+        MenuInterface->Host();
+    }
+}
+
+void UMainMenu::SetMenuInterface(IMenuInterface* MenuInterface) 
+{
+    this->MenuInterface = MenuInterface;
+}
+
+void UMainMenu::Setup() 
+{
+    this->AddToViewport();
+
+    UWorld* World = GetWorld();
+    if (!ensure(World != nullptr)) return;
+
+    APlayerController* PlayerController = World->GetFirstPlayerController();
+    if (!ensure(PlayerController != nullptr)) return;
+
+
+    FInputModeUIOnly InputModeData;
+
+    InputModeData.SetWidgetToFocus(this->TakeWidget());
+    InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+    PlayerController->SetInputMode(InputModeData);
+
+    PlayerController->bShowMouseCursor = true;
+}
+
+void UMainMenu::TearDown() 
+{
+	this->RemoveFromViewport();
+
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
+
+	FInputModeGameOnly InputModeData;
+	PlayerController->SetInputMode(InputModeData);
+
+	PlayerController->bShowMouseCursor = false;
 }

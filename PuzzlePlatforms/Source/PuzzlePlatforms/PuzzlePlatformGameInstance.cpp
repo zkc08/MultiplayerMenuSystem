@@ -78,6 +78,8 @@ void UPuzzlePlatformGameInstance::LoadMenu()
 
 void UPuzzlePlatformGameInstance::LoadInGameMenu() 
 {
+    if (!ensure(InGameMenuClass != nullptr)) return;
+    
     InGameMenu = CreateWidget<UInGameMenu>(this, InGameMenuClass);
     if (!ensure(InGameMenu != nullptr)) return;
 

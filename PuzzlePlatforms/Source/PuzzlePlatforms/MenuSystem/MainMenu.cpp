@@ -24,6 +24,9 @@ bool UMainMenu::Initialize()
     if (!ensure(JoinGameButton != nullptr)) return false;
     JoinGameButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
     
+    if (!ensure(QuitGameButton != nullptr)) return false;
+    QuitGameButton->OnClicked.AddDynamic(this, &UMainMenu::QuitGame);
+
     return true;
 }
 
@@ -56,6 +59,14 @@ void UMainMenu::JoinServer()
         if (!ensure(IPAdressField != nullptr)) return;
         const FString Address = IPAdressField->GetText().ToString();
         MenuInterface->Join(Address);
+    }
+}
+
+void UMainMenu::QuitGame() 
+{
+    if (MenuInterface != nullptr)
+    {
+        MenuInterface->QuitGame();
     }
 }
 

@@ -85,5 +85,13 @@ void UPuzzlePlatformGameInstance::LoadInGameMenu()
 
     InGameMenu->Setup();
 
-    InGameMenu->AddToViewport();    
+    InGameMenu->SetMenuInterface(this); 
+}
+
+void UPuzzlePlatformGameInstance::LoadMainMenu()
+{
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
+
+	PlayerController->ClientTravel("/Game/MenuSysytem/Maps/MainMenu", ETravelType::TRAVEL_Absolute);
 }

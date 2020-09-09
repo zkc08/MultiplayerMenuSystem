@@ -3,6 +3,24 @@
 
 #include "InGameMenu.h"
 
+#include "Components/Button.h"
+
+#include "PuzzlePlatformGameInstance.h"
+
+bool UInGameMenu::Initialize() 
+{
+    bool Success = Super::Initialize();
+    if (!Success) return false;
+
+    BackButton->OnClicked.AddDynamic(this, &UInGameMenu::BackButtonPressed);
+    if (!ensure(BackButton != nullptr)) return false;
+
+    QuitButton->OnClicked.AddDynamic(this, &UInGameMenu::QuitButtonPressed);
+    if (!ensure(QuitButton != nullptr)) return false;
+    
+    return  true;
+}
+
 void UInGameMenu::Setup() 
 {
     this->AddToViewport();
@@ -38,6 +56,20 @@ void UInGameMenu::TearDown()
 	PlayerController->SetInputMode(InputModeData);
 
 	PlayerController->bShowMouseCursor = false;
+}
+
+void UInGameMenu::BackButtonPressed() 
+{
+    TearDown();
+}
+
+void UInGameMenu::QuitButtonPressed() 
+{
+    if (MenuInterface != nullptr)
+    {
+        TearDown();
+        MenuInterface->LoadMainMenu();
+    }
 }
 
 void UInGameMenu::SetMenuInterface(IMenuInterface* MenuInterface) 
